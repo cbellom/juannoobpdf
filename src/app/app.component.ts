@@ -17,35 +17,86 @@ export class AppComponent {
 
     onSubmit() {
       this.submitted = true;
-      this.createPdf();
+      this.createPdf(this.model);
     }
 
     newData() {
       this.model = new Data(42, '', '', '', '', '', '', '', '', '', '');
     }
 
-    createPdf(){
+    createPdf(data : Data){
       let docDefinition = {
+        styles: {
+          'header': {
+            fontSize: 22,
+            bold: true,
+            alignment: 'center'
+          },
+          'sub-header': {
+            fontSize: 14,
+            alignment: 'center'
+          }
+        },
         content: [
-          'paragraph 1',
-          'paragraph 2',
+          { text: 'SISTEMA GESTIÓN DE CALIDAD', style: 'header' },
+          { text: 'UNIVERSIDAD NACIONAL', style: 'sub-header' },
+          { text: 'SEDE BOGOTA', style: 'sub-header', margin: [ 0, 0, 0, 20 ] },
           {
-            columns: [
-              'first column is a simple text',
-              {
-                stack: [
-                  // second column consists of paragraphs
-                  'paragraph A',
-                  'paragraph B',
-                  'these paragraphs will be rendered one below another inside the column'
-                ],
-                fontSize: 15
-              }
+            layout: 'lightHorizontalLines', // optional
+            table: {
+              // headers are automatically repeated if the table spans over multiple pages
+              // you can declare how many rows should be treated as headers
+              headerRows: 1,
+              widths: [ '*', 'auto', 100, '*' ],
+
+              body: [
+                [ 'First', 'Second', 'Third', 'The last one' ],
+                [ 'Value 1', 'Value 2', 'Value 3', 'Value 4' ],
+                [ { text: 'Bold value', bold: true }, 'Val 2', 'Val 3', 'Val 4' ]
+              ]
+            }
+          },
+          'Bulleted list example:',
+          {
+            // to treat a paragraph as a bulleted list, set an array of items under the ul key
+            ul: [
+              'Item 1',
+              'Item 2',
+              'Item 3',
+              { text: 'Item 4', bold: true },
+            ]
+          },
+
+          'Numbered list example:',
+          {
+            // for numbered lists set the ol key
+            ol: [
+              'Item 1',
+              'Item 2',
+              'Item 3'
             ]
           }
         ]
       };
-      // open the PDF in a new window
-      pdfMake.createPdf(docDefinition).download('optionalName.pdf');
+      let pdf = pdfMake.createPdf(docDefinition);
+      pdf.download('optionalName.pdf');
+    }
+
+    createContentToData(data: Data) {
+      return [
+        'paragraph 1',
+        'paragraph 2',
+        {
+          columns: [
+            'first column is a simple text',
+            [
+              // second column consists of paragraphs
+              'paragraph A',
+              'paragraph B',
+              'these paragraphs will be rendered one below another inside the column'
+            ]
+          ]
+        }
+      ]
     }
   }

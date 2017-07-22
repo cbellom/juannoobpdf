@@ -1,7 +1,16 @@
 <div class="container">
   <div [hidden]="submitted">
-    <h1>data Form</h1>
+    <h1 class="text-center">
+      SISTEMA GESTIÓN DE CALIDAD
+      <br>
+      UNIVERSIDAD NACIONAL
+      <br>
+      SEDE BOGOTA
+    </h1>
     <form (ngSubmit)="onSubmit()" #dataForm="ngForm">
+      <h4>
+          INFORME EVALUACIÓN DE LA GESTIÓN DEL RIESGO
+      </h4>
       <div class="form-group">
         <label for="name">vigencia</label>
         <input type="text" class="form-control" id="vigencia"
