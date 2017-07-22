@@ -11,10 +11,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 })
 export class AppComponent {
 
-    powers = ['Really Smart', 'Super Flexible',
-              'Super Hot', 'Weather Changer'];
-
-    model = new Data(18, 'Dr IQ', this.powers[0], 'Chuck Overstreet');
+    model = new Data(1, '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
 
     submitted = false;
 
@@ -23,12 +20,31 @@ export class AppComponent {
       this.createPdf();
     }
 
-    newHero() {
-      this.model = new Data(42, '', '');
+    newData() {
+      this.model = new Data(42, '', '', '', '', '', '', '', '', '', '');
     }
 
     createPdf(){
-      let docDefinition = { content: 'This is an sample PDF printed with pdfMake' };
+      let docDefinition = {
+        content: [
+          'paragraph 1',
+          'paragraph 2',
+          {
+            columns: [
+              'first column is a simple text',
+              {
+                stack: [
+                  // second column consists of paragraphs
+                  'paragraph A',
+                  'paragraph B',
+                  'these paragraphs will be rendered one below another inside the column'
+                ],
+                fontSize: 15
+              }
+            ]
+          }
+        ]
+      };
       // open the PDF in a new window
       pdfMake.createPdf(docDefinition).download('optionalName.pdf');
     }
